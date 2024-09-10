@@ -1,45 +1,59 @@
 //import javax.swing.*;
-//import java.awt.*;
+//import java.awt.Font;
+//import java.awt.GridLayout;
 //import java.awt.event.ActionEvent;
 //import java.awt.event.ActionListener;
 //
 //public class Calculator implements ActionListener {
+//    // Declare the components
 //    JFrame frame;
 //    JPanel panel;
 //    JTextField textField;
 //    Font font = new Font("Monospaced", Font.BOLD, 25);
 //
+//    // Declare the buttons and buttons arrays
 //    JButton[] numberBtns = new JButton[10];
 //    JButton[] functionBtns = new JButton[12];
-//    JButton addBtn, subBtn, mulBtn, divBtn, sqrBtn, sqrtBtn, powertBtn, eqBtn, clrBtn, dotBtn, delBtn, negBtn;
+//    JButton addBtn, subBtn, mulBtn, divBtn, sqrBtn, sqrtBtn, powerBtn, eqBtn, clrBtn, dotBtn, delBtn, negBtn;
 //
 //    double num1 = 0, num2 = 0, result = 0;
 //    char operator;
 //
 //    public Calculator() {
+//        // Initialize the frame
 //        frame = new JFrame("Calculator");
 //        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 //        frame.setSize(450, 600);
+//        frame.setResizable(false);
 //        frame.setLayout(null);
 //
+//        // Initialize the textfield
 //        textField = new JTextField();
 //        textField.setBounds(10, 10, 415, 80);
 //        textField.setFont(font);
 //        textField.setEditable(true);
+//        textField.setHorizontalAlignment(JTextField.RIGHT);
 //
+//        // Initialize the panel
+//        panel = new JPanel();
+//        panel.setBounds(10, 215, 415, 330);
+//        panel.setLayout(new GridLayout(5, 4, 5, 5));
+//
+//        // Initialize the buttons
 //        addBtn = new JButton("+");
 //        subBtn = new JButton("-");
 //        mulBtn = new JButton("*");
 //        divBtn = new JButton("/");
 //        sqrBtn = new JButton("x^2");
 //        sqrtBtn = new JButton("sqrt");
-//        powertBtn = new JButton("x^y");
+//        powerBtn = new JButton("x^y");
 //        eqBtn = new JButton("=");
 //        clrBtn = new JButton("C");
 //        dotBtn = new JButton(".");
 //        delBtn = new JButton("<-");
 //        negBtn = new JButton("+/-");
 //
+//        // Add functional buttons to the array
 //        functionBtns[0] = addBtn;
 //        functionBtns[1] = subBtn;
 //        functionBtns[2] = mulBtn;
@@ -49,30 +63,25 @@
 //        functionBtns[6] = eqBtn;
 //        functionBtns[7] = delBtn;
 //        functionBtns[8] = clrBtn;
-//        functionBtns[9] = powertBtn;
+//        functionBtns[9] = powerBtn;
 //        functionBtns[10] = negBtn;
 //        functionBtns[11] = dotBtn;
 //
-//
-//
+//        // Add action listeners to the functional buttons
 //        for (JButton functionBtn : functionBtns) {
 //            functionBtn.addActionListener(this);
 //            functionBtn.setFont(font);
-//            functionBtn.setFocusable(false);
 //        }
 //
+//        // Add action listeners to the number buttons
 //        for (int i=0; i<10;i++) {
 //            numberBtns[i] = new JButton(String.valueOf(i));
 //            numberBtns[i].addActionListener(this);
 //            numberBtns[i].setFont(font);
-//            numberBtns[i].setFocusable(false);
 //        }
 //
-//        panel = new JPanel();
-//        panel.setBounds(10, 215, 415, 330);
-//        panel.setLayout(new GridLayout(5, 4, 5, 5));
-//
-//        panel.add(powertBtn);
+//        // Add the buttons to the panel
+//        panel.add(powerBtn);
 //        panel.add(sqrBtn);
 //        panel.add(sqrtBtn);
 //        panel.add(divBtn);
@@ -93,9 +102,11 @@
 //        panel.add(dotBtn);
 //        panel.add(eqBtn);
 //
+//        // Set the bounds of the top buttons
 //        clrBtn.setBounds(220,150, 100, 60);
 //        delBtn.setBounds(325,150, 100, 60);
 //
+//        // Add the components to the frame
 //        frame.add(panel);
 //        frame.add(textField);
 //        frame.add(clrBtn);
@@ -113,83 +124,141 @@
 //        }
 //
 //        if (e.getSource() == dotBtn) {
-//            if (!textField.getText().contains(".")) textField.setText(textField.getText().concat(".")); // check if the textfield already contains a decimal point
+//            setDotBtn();
 //        }
 //
 //        if (e.getSource() == addBtn) {
-//            num1 = Double.parseDouble(textField.getText());
-//            operator = '+';
-//            textField.setText("");
+//            setAddBtn();
 //        }
 //
 //        if (e.getSource() == subBtn) {
-//            num1 = Double.parseDouble(textField.getText());
-//            operator = '-';
-//            textField.setText("");
+//            setSubBtn();
 //        }
 //
 //        if (e.getSource() == mulBtn) {
-//            num1 = Double.parseDouble(textField.getText());
-//            operator = '*';
-//            textField.setText("");
+//            setMulBtn();
 //        }
 //
 //        if (e.getSource() == divBtn) {
-//            num1 = Double.parseDouble(textField.getText());
-//            operator = '/';
-//            textField.setText("");
+//            setDivBtn();
 //        }
 //
 //        if (e.getSource() == sqrBtn) {
-//            num1 = Double.parseDouble(textField.getText());
-//
-//            operator = '~';
-//            textField.setText("");
-//
-//            System.out.println(num1 + " " + operator + " " + num2);
+//            setSquare();
 //        }
 //
 //        if (e.getSource() == sqrtBtn) {
-//            num1 = Double.parseDouble(textField.getText());
-//            operator = 'v';
-//            textField.setText("");
+//            setSquareRoot();
 //        }
 //
-//        if (e.getSource() == powertBtn) {
-//            num1 = Double.parseDouble(textField.getText());
-//            operator = '^';
-//            textField.setText("");
-//        }
-//
-//        if (e.getSource() == eqBtn) {
-//            if (operator != 'v' && operator != '~') {
-//                num2 = Double.parseDouble(textField.getText());
-//            }
-//            result = calculation(num1, num2, operator);
-//            textField.setText(String.valueOf(result));
-//            num1 = result;
-//            System.out.println(result + " " + num1 + " " + num2);
+//        if (e.getSource() == powerBtn) {
+//            setPower();
 //        }
 //
 //        if (e.getSource() == clrBtn) {
-//            textField.setText("");
-//            num1 = 0;
-//            num2 = 0;
+//            setClear();
 //        }
 //
 //        if (e.getSource() == delBtn) {
-//            int newLength = textField.getText().length() - 1;
-//            if (newLength >= 0) textField.setText(textField.getText().substring(0, newLength)); // check if the textfield is not empty before deleting
+//            setDelete();
 //        }
 //
 //        if (e.getSource() == negBtn) {
-//            double temp = Double.parseDouble(textField.getText());
-//            temp *= -1;
-//            textField.setText(String.valueOf(temp));
+//            setNegate();
+//        }
+//
+//        if (e.getSource() == eqBtn) {
+//            performCalculation();
 //        }
 //    }
 //
-//    public double calculation(double num1, double num2, char operator) {
+//    /**
+//     * BELOW ARE HELPER METHODS TO PERFORM THE SETTING NUMBERS, OPERATORS AND CALCULATIONS
+//     */
+//
+//    private void performCalculation() {
+//        try {
+//            if (operator != 'v' && operator != '~') {
+//                if (num2 == 0) {
+//                    num2 = Double.parseDouble(textField.getText());
+//                }
+//            }
+//            result = getCalculation(num1, num2, operator);
+//            textField.setText(String.valueOf(result));
+//            num1 = result;
+//
+//        } catch (Exception ex) {
+//            textField.setText("Error");
+//            num1 = 0;
+//            num2 = 0;
+//        }
+//    }
+//
+//    private void setDotBtn() {
+//        if (!textField.getText().contains(".")) textField.setText(textField.getText().concat(".")); // check if the textfield already contains a decimal point
+//    }
+//
+//    private void setAddBtn() {
+//        num1 = Double.parseDouble(textField.getText());
+//        operator = '+';
+//        textField.setText("");
+//    }
+//
+//    private void setSubBtn() {
+//        num1 = Double.parseDouble(textField.getText());
+//        operator = '-';
+//        textField.setText("");
+//    }
+//
+//    private void setMulBtn() {
+//        num1 = Double.parseDouble(textField.getText());
+//        operator = '*';
+//        textField.setText("");
+//    }
+//
+//    private void setDivBtn() {
+//        num1 = Double.parseDouble(textField.getText());
+//        operator = '/';
+//        textField.setText("");
+//    }
+//
+//    private void setPower() {
+//        num1 = Double.parseDouble(textField.getText());
+//        operator = '^';
+//        textField.setText("");
+//    }
+//
+//    private void setSquare() {
+//        num1 = Double.parseDouble(textField.getText());
+//        operator = '~';
+//        textField.setText("");
+//    }
+//
+//    private void setSquareRoot() {
+//        num1 = Double.parseDouble(textField.getText());
+//        operator = 'v';
+//        textField.setText("");
+//    }
+//
+//    private void setNegate() {
+//        double temp = Double.parseDouble(textField.getText());
+//        temp *= -1;
+//        textField.setText(String.valueOf(temp));
+//    }
+//
+//    private void setClear() {
+//        textField.setText("");
+//        num1 = 0;
+//        num2 = 0;
+//    }
+//
+//    private void setDelete() {
+//        int newLength = textField.getText().length() - 1;
+//        if (newLength >= 0) textField.setText(textField.getText().substring(0, newLength)); // check if the textfield is not empty before deleting
+//    }
+//
+//    private double getCalculation(double num1, double num2, char operator) {
+//        System.out.println(num1 + " " + operator + " " + num2);
 //        return switch (operator) {
 //            case '+' -> num1 + num2;
 //            case '-' -> num1 - num2;
