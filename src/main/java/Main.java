@@ -123,12 +123,19 @@ class Calculator implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
+        // Check which number button is clicked and add the number to the textfield
+        String errorMessages = "Error, Infinity, -Infinity, NaN";
         for (int i=0; i<10;i++) {
             if (e.getSource() == numberBtns[i]) {
+                if (errorMessages.contains(textField.getText()) || result ==0 ) { // check if the textfield contains an error message or previous result, then clear before adding the number
+                    textField.setText("");
+                    num2 = 0;
+                }
                 textField.setText(textField.getText().concat(String.valueOf(i)));
             }
         }
 
+        /* Check which functional button is clicked and perform the corresponding operation */
         if (e.getSource() == dotBtn) {
             setDotBtn();
         }
@@ -175,13 +182,14 @@ class Calculator implements ActionListener {
 
         if (e.getSource() == eqBtn) {
             performCalculation();
+            textField.setText(String.valueOf(result));
+            result = 0;
         }
     }
 
     /**
      * BELOW ARE HELPER METHODS TO PERFORM THE SETTING NUMBERS, OPERATORS AND CALCULATIONS
      */
-
     private void performCalculation() {
         try {
             if (operator != 'v' && operator != '~') {
@@ -190,9 +198,7 @@ class Calculator implements ActionListener {
                 }
             }
             result = getCalculation(num1, num2, operator);
-            textField.setText(String.valueOf(result));
             num1 = result;
-
         } catch (Exception ex) {
             textField.setText("Error");
             num1 = 0;
@@ -205,45 +211,38 @@ class Calculator implements ActionListener {
     }
 
     private void setAddBtn() {
-        num1 = Double.parseDouble(textField.getText());
+        getNum1();
         operator = '+';
-        textField.setText("");
     }
 
     private void setSubBtn() {
-        num1 = Double.parseDouble(textField.getText());
+        getNum1();
         operator = '-';
-        textField.setText("");
     }
 
     private void setMulBtn() {
-        num1 = Double.parseDouble(textField.getText());
+        getNum1();
         operator = '*';
-        textField.setText("");
     }
 
     private void setDivBtn() {
-        num1 = Double.parseDouble(textField.getText());
+        getNum1();
         operator = '/';
-        textField.setText("");
     }
 
     private void setPower() {
-        num1 = Double.parseDouble(textField.getText());
+        getNum1();
         operator = '^';
-        textField.setText("");
     }
 
     private void setSquare() {
-        num1 = Double.parseDouble(textField.getText());
-        operator = '~';
-        textField.setText("");
+        getNum1();
+        operator = '~'; // ^ is used for power, ~ is used for square
     }
 
     private void setSquareRoot() {
-        num1 = Double.parseDouble(textField.getText());
+        getNum1();
         operator = 'v';
-        textField.setText("");
     }
 
     private void setNegate() {
@@ -256,11 +255,20 @@ class Calculator implements ActionListener {
         textField.setText("");
         num1 = 0;
         num2 = 0;
+        operator = ' ';
+        result = 0;
     }
 
     private void setDelete() {
         int newLength = textField.getText().length() - 1;
         if (newLength >= 0) textField.setText(textField.getText().substring(0, newLength)); // check if the textfield is not empty before deleting
+    }
+
+    private void getNum1() {
+        if (!textField.getText().isEmpty()) {
+            num1 = Double.parseDouble(textField.getText());
+        }
+        textField.setText("");
     }
 
     private double getCalculation(double num1, double num2, char operator) {
